@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">   
+<head>
+    <title>Marvel Original Six</title> 
+    <style> 
+    /* Global stil ayarları */
+        * {               
+            margin: 0;                                   
+            padding: 0;               
+            box-sizing: border-box;   
+        }   
+    /* Body kısmının stil ayarları */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #fff; /* Yazı rengi beyaz */
+            background: linear-gradient(to bottom,#000428,#004e92); /* Arka plan gradyanı */
+        }
+     /* Header (başlık) kısmının stil ayarları */
+        header {
+            background-color: #1a237e;
+            color: #ffcc80;
+            text-align: center;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Gölgelendirme */
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Hücre sınırlarını birleştir */
+            margin: 1rem 0;
+        }
+        th, td {
+            border: 1px solid #555; /* Hücre sınırı */
+
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #283593;
+            color: #ffcc80;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.2); /* Çift satırlara gri arka plan */
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Satır üzerine gelindiğinde gri arka plan */
+        }
+        form {
+          background-color: rgba(26, 35, 126, 0.9);
+          text-align: center;
+          padding: 1rem;
+          border-radius: 10px;
+          margin: 1rem auto;
+          max-width: 80%;
+          color: #ffcc80;
+        }
+        .character-select-table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        .character-select-table th, .character-select-table td {
+            padding: 10px;
+            border: 1px solid #555;
+        }
+
+        .character-select-table th {
+            background-color: #283593;
+            color: #ffcc80;
+        }
+
+        .character-select-table td {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .select-button {
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out; /* Geçiş efekti */
+            font-size: 1rem;
+        }
+
+        .select-button:hover {
+            background-color: #c51162; /* Buton üzerine gelindiğinde arka plan rengi değişir */
+        }
+
+
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .character {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-align: center;
+            padding: 1rem;
+            cursor: pointer; /* İmleç buton üzerinde */
+            transition: transform 0.2s ease, box-shadow 0.2s;
+        }
+
+        .character:hover {
+            transform: scale(1.05); /* Hover efekti: karakter büyür */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5); /* Hover efekti: gölge artar */
+        }
+
+        .character img {
+          width: 150px;
+           height: 200px;
+        }
+
+      .character h2 {
+            font-size: 1.5rem;
+            color: #ffcc80;
+        }
+
+        #details {
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffcc80;
+            text-align: center;
+            margin: 2rem auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            display: none;
+        }
+
+        #backButton {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: #f50057;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #backButton:hover {
+            background: #c51162;
+        }
+
+        footer {
+            text-align: center;
+            background: #1a237e;
+            color: #ffcc80;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #f50057;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+       function showDetails(character) {
+    const characterDetails = {
+        ironman: {
+            title: "Iron Man",
+            description: "<i>The real name of Iron Man is <b>Tony Stark</b>, a genius, billionaire, and master of armor technology.<i>",
+            equipment: ["Iron Man Suit", "Arc Reactor", "AI Assistant J.A.R.V.I.S."],
+            image: "ironman.jpg",
+            wikiLink: "https://en.wikipedia.org/wiki/Iron_Man",
+            videoLink: "https://www.youtube.com/embed/nDmia5MjQ0I?si=S_cJ3Wsvg-RLafAy"
+        },
+        captainamerica: {
+            title: "Captain America",
+            description: "<i><b>Steve Rogers</b> became a strong and agile hero thanks to the super soldier serum.<i>",
+            equipment: ["Vibranium Shield", "Motorcycle", "Tactical Gear"],
+            image: "captainamerica.jpg",
+            wikiLink: "https://en.wikipedia.org/wiki/Captain_America",
+            videoLink: "https://www.youtube.com/embed/swHGr6hJd98?si=t0xLUUnQJkKRzsSs" 
+        },
+        thor: {
+            title: "Thor",
+            description: "<i>The god of Asgard, <b>Thor son of Odin</b>, wields his hammer Mjölnir to protect the world from evil.<i>",
+            equipment: ["Mjölnir", "Stormbreaker", "Asgardian Armor"],
+            image: "thor.jpg",
+            wikiLink: "https://en.wikipedia.org/wiki/Thor_(Marvel_Comics)",
+            videoLink: "https://www.youtube.com/embed/0WqBCG_-udw?si=j3HXiG8L264ajfPf" 
+        },
+        hulk: {
+            title: "Hulk",
+            description: "<i><b>Bruce Banner</b> turns into a green giant due to gamma radiation and his anger.<i>",
+            equipment: ["Gamma Strength", "Lab Equipment", "Quinjet"],
+            image: "hulk.jpg",
+            wikiLink: "https://en.wikipedia.org/wiki/Hulk_(Marvel_Comics)",
+            videoLink: "https://www.youtube.com/embed/igndOYw14fc?si=AxBZBzzm1MWQMOp2" 
+        },
+        blackwidow: {
+            title: "Black Widow",
+            description: "<i><b>Natasha Romanoff</b> is a super spy and a master of martial arts.<i>",
+            equipment: ["Black Widow's Bite (Electroshock Weapons)", "Grappling Hook", "Stealth Suit"],
+            image: "blackwidow.jpg",
+            wikiLink: "https://en.wikipedia.org/wiki/Black_Widow_(Natasha_Romanoff)",
+            videoLink: "https://www.youtube.com/embed/JyyGJk51n-0?si=shGvwjMOzzHzi_m4" 
+        },
+        hawkeye: {
+            title: "Hawkeye",
+            description: "<i><b>Clint Barton</b> is a SHIELD agent who has mastered archery.<i>",
+            equipment: ["Bow and Arrows", "Explosive Arrows", "Quiver with Advanced Tech"],
+            image: "hawkeye.jpg",
+            wikiLink: "https://en.wikipedia.org/wiki/Hawkeye_(Clint_Barton)",
+            videoLink: "https://www.youtube.com/embed/IZC9AhvuUko?si=UmPVd3dCrc4kKU8z" 
+        }
+    };
+
+    const mainContent = document.getElementById("mainContent");
+    const details = document.getElementById("details");
+    const characterData = characterDetails[character];
+
+    if (characterData) {
+        const equipmentList = characterData.equipment.map(item => `<li>${item}</li>`).join('');
+
+        details.innerHTML = `
+            <img src="${characterData.image}" alt="${characterData.title}" style="width: 100%; max-width: 300px; margin-bottom: 1rem;">
+            <h2>${characterData.title}</h2>
+            <p>${characterData.description}</p>
+            <h3>Favorite Equipment:</h3>
+            <ul style="text-align: left; list-style-type: disc; padding-left: 20px;">
+                ${equipmentList}
+            </ul>
+            <h3>Watch the Hero in Action:</h3>
+            <iframe width="560" height="315" src="${characterData.videoLink}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <br>
+            <a href="${characterData.wikiLink}" target="_blank" style="color: #f00; text-decoration: none; font-weight: bold;">More Info on Wikipedia about Hero</a>
+            <hr>
+            <button id="backButton" onclick="goBack()">Go Back</button>
+        `;
+        mainContent.style.display = "none";
+        details.style.display = "block";
+    }
+}
+
+function goBack() {
+    const mainContent = document.getElementById("mainContent");
+    const details = document.getElementById("details");
+
+    details.style.display = "none";
+    mainContent.style.display = "grid";
+}
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Marvel Original Six</h1>
+    </header>
+
+    <main id="mainContent">
+        <section class="character" onclick="showDetails('ironman')">
+            <img src="ironman.jpg" alt="Iron Man">
+            <h2>Iron Man</h2>
+        </section>
+
+        <section class="character" onclick="showDetails('captainamerica')">
+            <img src="captainamerica.jpg" alt="Captain America">
+            <h2>Captain America</h2>
+        </section>
+
+        <section class="character" onclick="showDetails('thor')">
+            <img src="thor.jpg" alt="Thor">
+            <h2>Thor</h2>
+        </section>
+
+        <section class="character" onclick="showDetails('hulk')">
+            <img src="hulk.jpg" alt="Hulk">
+            <h2>Hulk</h2>
+        </section>
+
+        <section class="character" onclick="showDetails('blackwidow')">
+            <img src="blackwidow.jpg" alt="Black Widow">
+            <h2>Black Widow</h2>
+        </section>
+
+        <section class="character" onclick="showDetails('hawkeye')">
+            <img src="hawkeye.jpg" alt="Hawkeye">
+            <h2>Hawkeye</h2>
+        </section>
+    </main>
+    <table>
+      <thead>
+          <tr>
+              <th>Original Name</th>
+              <th>Surname</th>
+              <th>Age</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>Tony</td>
+              <td>Stark</td>
+              <td>48</td>
+          </tr>
+          <tr>
+              <td>Steve</td>
+              <td>Rogers</td>
+              <td>105</td>
+          </tr>
+          <tr>
+              <td>Natasha</td>
+              <td>Romanoff</td>
+              <td>39</td>
+          </tr>
+          <tr>
+              <td>Bruce</td>
+              <td>Banner</td>
+              <td>49</td>
+          </tr>
+          <tr>
+              <td>Thor</td>
+              <td>Odinson</td>
+              <td>1500</td>
+          </tr>
+          <tr>
+              <td>Clint</td>
+              <td>Barton</td>
+              <td>45</td>
+          </tr>
+      </tbody>
+  </table>
+  <form action="#" method="post">
+    <h1>Choose Your Favorite Character:</h1>
+    <table class="character-select-table">
+        <thead>
+            <tr>
+                <th>Character</th>
+                <th>Image</th>
+                <th>Selection</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Iron Man</td>
+                <td><img src="ironman.jpg" alt="Iron Man" style="width: 80px; height: auto;"></td>
+                <td><button type="submit" name="Character" value="Iron Man" class="select-button">Select</button></td>
+            </tr>
+            <tr>
+                <td>Captain America</td>
+                <td><img src="captainamerica.jpg" alt="Captain America" style="width: 80px; height: auto;"></td>
+                <td><button type="submit" name="Character" value="Captain America" class="select-button">Select</button></td>
+            </tr>
+            <tr>
+                <td>Thor</td>
+                <td><img src="thor.jpg" alt="Thor" style="width: 80px; height: auto;"></td>
+                <td><button type="submit" name="Character" value="Thor" class="select-button">Select</button></td>
+            </tr>
+            <tr>
+                <td>Hulk</td>
+                <td><img src="hulk.jpg" alt="Hulk" style="width: 80px; height: auto;"></td>
+                <td><button type="submit" name="Character" value="Hulk" class="select-button">Select</button></td>
+            </tr>
+            <tr>
+                <td>Black Widow</td>
+                <td><img src="blackwidow.jpg" alt="Black Widow" style="width: 80px; height: auto;"></td>
+                <td><button type="submit" name="Character" value="Black Widow" class="select-button">Select</button></td>
+            </tr>
+            <tr>
+                <td>Hawkeye</td>
+                <td><img src="hawkeye.jpg" alt="Hawkeye" style="width: 80px; height: auto;"></td>
+                <td><button type="submit" name="Character" value="Hawkeye" class="select-button">Select</button></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+    <section id="details"></section>
+
+    <footer>
+        <p>© 2025 Marvel Fan Site. All rights reserved.</p>
+        <a href="https://www.nisantasi.edu.tr/">Contact</a>
+    </footer>
+</body>
+</html>
